@@ -1,0 +1,1 @@
+web: LEIN_NO_DEV=true lein ring server-headless $PORT

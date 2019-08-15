@@ -5,7 +5,7 @@
   (let [data (:data (first sheets))]
     (first data)))
 
-(defn- get-calendar-sheet [key {:keys [sheets]}]
+(defn- get-sheet [key {:keys [sheets]}]
   (first (filter #(= (get-in %1 [:properties :title]) key) sheets)))
 
 
@@ -19,15 +19,24 @@
 
 (defn get-calendar [day]
   (let [sheet-data (sheets/get-sheet)
-        selected-sheet (get-calendar-sheet day sheet-data)
+        selected-sheet (get-sheet day sheet-data)
         data (first (:data selected-sheet))
         mapped-data (map (fn [row]
-                           (println row)
                            (let [time-col (get (:values row) 0)
                                  time (:formattedValue time-col)
                                  event-name-col (get (:values row) 1)
                                  event-name (:formattedValue event-name-col)
                                  event-place-col (get (:values row) 2)
                                  event-place (:formattedValue event-place-col)] {:time time :eventName event-name :eventPlace event-place})) (:rowData data))]
-    (println selected-sheet)
+    mapped-data))
+
+(defn get-team []
+  (let [sheet-data (sheets/get-sheet)
+        selected-sheet (get-sheet "ihmiset" sheet-data)
+        data (first (:data selected-sheet))
+        mapped-data (map (fn [row]
+                           (let [name-col (get (:values row) 0)
+                                 name (:formattedValue name-col)
+                                 title-col (get (:values row) 1)
+                                 title (:formattedValue title-col)] {:name name :title title})) (:rowData data))]
     mapped-data))

@@ -40,3 +40,19 @@
                                  title-col (get (:values row) 1)
                                  title (:formattedValue title-col)] {:name name :title title})) (:rowData data))]
     mapped-data))
+
+(defn get-accomodation-info []
+  (let [sheet-data (sheets/get-sheet)
+        selected-sheet (get-sheet "majo" sheet-data)
+        data (first (:data selected-sheet))
+        majo-row (-> (:rowData data) (first))
+        taxi-row (-> (:rowData data) (get 1))
+        mapped-data (let [majo-title-col (first (:values majo-row))
+                          majo-content-col (get (:values majo-row) 1)
+                          taxi-title-col (first (:values taxi-row))
+                          taxi-content-col (get (:values taxi-row) 1)]
+                      {:mainTitle (:formattedValue majo-title-col)
+                       :mainContent (:formattedValue majo-content-col)
+                       :taxiTitle (:formattedValue taxi-title-col)
+                       :taxiContent (:formattedValue taxi-content-col)})]
+    mapped-data))

@@ -13,6 +13,8 @@
        (response (content-service/get-calendar day)))
   (GET "/api/content/people" []
        (response (content-service/get-team)))
+  (GET "/api/content/accomodation" []
+       (response (content-service/get-accomodation-info)))
   (route/not-found "Not Found"))
 
 (def app (-> app-routes wrap-json-response (wrap-cors :access-control-allow-origin [#".*"] :access-control-allow-methods [:get])))

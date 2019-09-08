@@ -56,3 +56,16 @@
                        :taxiTitle (:formattedValue taxi-title-col)
                        :taxiContent (:formattedValue taxi-content-col)})]
     mapped-data))
+
+(defn get-sponsors []
+  (let [sheet-data (sheets/get-sheet)
+        selected-sheet (get-sheet "yhteistyökumppanit" sheet-data)
+        data (first (:data selected-sheet))
+        mapped-data (map (fn [row]
+                           (let [company-name-col (get (:values row) 0)
+                                 company-name (:formattedValue company-name-col)
+                                 company-url-col (get (:values row) 1)
+                                 company-url (:formattedValue company-url-col)
+                                 company-logo-col (get (:values row) 2)
+                                 company-logo (:formattedValue company-logo-col)] {:name company-name :url company-url :logoUrl company-logo})) (:rowData data))]
+    mapped-data))
